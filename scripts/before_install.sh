@@ -1,23 +1,21 @@
 #!/bin/bash
 set -e
 
-echo "Stopping Apache..."
+echo "Stopping Apache server..."
 sudo systemctl stop apache2
 
-DEPLOY_DIR="/var/www/html/laravel-blog-api-hands-on"
+echo "Backing up current app..."
 BACKUP_DIR="/var/www/html/backup-$(date +%Y%m%d%H%M%S)"
-
-echo "Backing up existing project (if exists)..."
-if [ -d "$DEPLOY_DIR" ]; then
-    sudo cp -r "$DEPLOY_DIR" "$BACKUP_DIR"
+if [ -d "/var/www/html/laravel-blog-api-hands-on" ]; then
+    sudo cp -r /var/www/html/laravel-blog-api-hands-on "$BACKUP_DIR"
 fi
 
 echo "Removing old project completely..."
-sudo rm -rf "$DEPLOY_DIR"
+sudo rm -rf /var/www/html/laravel-blog-api-hands-on
 
-echo "Creating clean deployment directory..."
-sudo mkdir -p "$DEPLOY_DIR"
-sudo chown ubuntu:www-data "$DEPLOY_DIR"
-sudo chmod 775 "$DEPLOY_DIR"
+echo "Creating fresh directory..."
+sudo mkdir -p /var/www/html/laravel-blog-api-hands-on
+sudo chown -R ubuntu:www-data /var/www/html/laravel-blog-api-hands-on
+sudo chmod -R 775 /var/www/html/laravel-blog-api-hands-on
 
-echo "BeforeInstall complete."
+echo "before_install.sh completed successfully."
