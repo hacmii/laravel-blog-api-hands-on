@@ -1,8 +1,9 @@
 #!/bin/bash
-echo "Copying new files and setting permissions..."
-sudo chown -R ubuntu:www-data /var/www/html/laravel-blog-api-hands-on
-cd /var/www/html/laravel-blog-api-hands-on
 echo "Installing composer dependencies..."
+cd /var/www/html/laravel-blog-api-hands-on
 composer install --no-dev --optimize-autoloader
-echo "Running migrations..."
-php artisan migrate --force
+
+echo "Setting permissions..."
+sudo chown -R ubuntu:www-data /var/www/html/laravel-blog-api-hands-on
+sudo chmod -R 775 /var/www/html/laravel-blog-api-hands-on/storage
+sudo chmod -R 775 /var/www/html/laravel-blog-api-hands-on/bootstrap/cache
