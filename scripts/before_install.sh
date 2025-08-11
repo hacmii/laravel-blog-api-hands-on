@@ -1,9 +1,6 @@
 #!/bin/bash
 set -e
 
-echo "Stopping Apache server..."
-sudo systemctl stop apache2
-
 echo "Backing up current app..."
 BACKUP_DIR="/var/www/html/backup-$(date +%Y%m%d%H%M%S)"
 if [ -d "/var/www/html/laravel-blog-api-hands-on" ]; then

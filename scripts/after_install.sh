@@ -30,5 +30,8 @@ sudo chown -R ubuntu:www-data /var/www/html/laravel-blog-api-hands-on
 sudo chmod -R 775 /var/www/html/laravel-blog-api-hands-on/storage
 sudo chmod -R 775 /var/www/html/laravel-blog-api-hands-on/bootstrap/cache
 
-echo "after_install.sh completed successfully."
+# Restart Apache
+echo "Restarting Apache..."
+sudo systemctl restart apache2
 
+echo "after_install.sh completed successfully."
