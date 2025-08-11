@@ -11,11 +11,12 @@ if [ -d "$APP_DIR" ]; then
     sudo cp -R "$APP_DIR"/* "$BACKUP_DIR"/
 fi
 
-# Clean up the application directory except .env and storage/
-echo "Cleaning up application directory..."
-sudo find "$APP_DIR" -mindepth 1 -maxdepth 1 ! -name '.env' ! -name 'storage' -exec rm -rf {} +
+# Completely remove old app directory
+echo "Removing old application directory..."
+sudo rm -rf "$APP_DIR"
 
-# Fix ownership so CodeDeploy can overwrite files
+# Recreate empty directory
+sudo mkdir -p "$APP_DIR"
 sudo chown -R ubuntu:www-data "$APP_DIR"
 
-echo "Backup and cleanup complete."
+echo "Backup complete and old app removed."
