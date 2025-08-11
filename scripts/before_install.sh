@@ -1,18 +1,21 @@
 #!/bin/bash
 set -e
 
-echo "Backing up current app..."
-BACKUP_DIR="/var/www/html/backup-$(date +%Y%m%d%H%M%S)"
-if [ -d "/var/www/html/laravel-blog-api-hands-on" ]; then
-    sudo cp -r /var/www/html/laravel-blog-api-hands-on "$BACKUP_DIR"
+APP_DIR="/var/www/html/laravel-blog-api-hands-on"
+BACKUP_DIR="/var/www/html/backup_$(date +"%Y%m%d_%H%M%S")"
+
+# Backup existing folder
+if [ -d "$APP_DIR" ]; then
+    echo "Backing up current application to $BACKUP_DIR"
+    sudo mkdir -p "$BACKUP_DIR"
+    sudo cp -R "$APP_DIR"/* "$BACKUP_DIR"/
 fi
 
-echo "Removing old project completely..."
-sudo rm -rf /var/www/html/laravel-blog-api-hands-on
+# Clean up the application directory except .env and storage/
+echo "Cleaning up application directory..."
+sudo find "$APP_DIR" -mindepth 1 -maxdepth 1 ! -name '.env' ! -name 'storage' -exec rm -rf {} +
 
-echo "Creating fresh directory..."
-sudo mkdir -p /var/www/html/laravel-blog-api-hands-on
-sudo chown -R ubuntu:www-data /var/www/html/laravel-blog-api-hands-on
-sudo chmod -R 775 /var/www/html/laravel-blog-api-hands-on
+# Fix ownership so CodeDeploy can overwrite files
+sudo chown -R ubuntu:www-data "$APP_DIR"
 
-echo "before_install.sh completed successfully."
+echo "Backup and cleanup complete."
